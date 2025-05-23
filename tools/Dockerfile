@@ -24,3 +24,4 @@ RUN AWSCLI_VERSION=2.22.24 && curl -s -o awscliv2.zip https://awscli.amazonaws.c
   rm -f ./awscliv2.zip
 
 LABEL org.opencontainers.image.authors="sith.network"
+LABEL org.opencontainers.image.source https://github.com/micxba/containers

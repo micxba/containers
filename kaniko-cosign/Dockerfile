@@ -10,3 +10,4 @@ COPY --from=cosign /ko-app/cosign /usr/local/bin/cosign
 COPY --from=vault /bin/vault /usr/local/bin/vault
 
 LABEL org.opencontainers.image.authors="sith.network"
+LABEL org.opencontainers.image.source https://github.com/micxba/containers
