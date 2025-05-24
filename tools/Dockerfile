@@ -24,7 +24,7 @@ RUN AWSCLI_VERSION=2.22.24 && curl -s -o awscliv2.zip https://awscli.amazonaws.c
   rm -f ./awscliv2.zip
 
 
-RUN curl -sL "https://github.com/mikefarah/yq/releases/download/4.45.1/yq_linux_amd64" -o /usr/local/bin/yq
+RUN curl -sL "https://github.com/mikefarah/yq/releases/download/v4.45.1/yq_linux_amd64" -o /usr/local/bin/yq
 RUN chmod +x /usr/local/bin/yq
 
 LABEL org.opencontainers.image.authors="sith.network"
