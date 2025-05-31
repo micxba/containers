@@ -23,6 +23,15 @@ RUN AWSCLI_VERSION=2.22.24 && curl -s -o awscliv2.zip https://awscli.amazonaws.c
   rm -rf ./aws && \
   rm -f ./awscliv2.zip
 
+# Set desired Vault version
+ENV VAULT_VERSION=1.18.1
+
+# Download and install Vault CLI
+RUN curl -Lo /tmp/vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
+    unzip /tmp/vault.zip -d /usr/local/bin && \
+    chmod +x /usr/local/bin/vault && \
+    rm -f /tmp/vault.zip
+
 
 RUN curl -sL "https://github.com/mikefarah/yq/releases/download/v4.45.1/yq_linux_amd64" -o /usr/local/bin/yq
 RUN chmod +x /usr/local/bin/yq

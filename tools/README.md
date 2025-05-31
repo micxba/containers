@@ -7,3 +7,4 @@ Its purpose is to provide tools to a GitLab CI/CD pipeline job or a Kubernetes i
 ## CHANGELOG
 
 * 2025.05.23 - Initial image
+* 2025.05.41 - Add vault CLI
