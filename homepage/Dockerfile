@@ -1,13 +1,13 @@
 FROM python:3.12-slim
 
-RUN pip install flask pyyaml requests
-
 WORKDIR /app
 
-COPY app.py /app/
-COPY templates/ /app/templates/
-COPY static/ /app/static/
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-ENV FLASK_APP=app.py
+COPY app.py .
+COPY templates/ templates/
+COPY static/ static/
 
-CMD ["flask", "run", "--host=0.0.0.0", "--port=3000"]
+EXPOSE 3000
+CMD ["python", "app.py"]
