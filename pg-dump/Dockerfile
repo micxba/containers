@@ -7,7 +7,7 @@ RUN apt-get update && \
     /tmp/aws/install && \
     rm -rf /var/lib/apt/lists/* /tmp/*
 
-COPY pgdump/backup.sh /usr/local/bin/backup.sh
+COPY pg-dump/backup.sh /usr/local/bin/backup.sh
 RUN chmod +x /usr/local/bin/backup.sh
 
 ENTRYPOINT ["/usr/local/bin/backup.sh"]
