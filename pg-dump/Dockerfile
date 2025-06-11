@@ -1,5 +1,7 @@
 FROM postgres:17-bookworm
 
+RUN apt update && apt upgrade
+
 RUN apt-get update && \
     apt-get install -y curl unzip && \
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip" && \
