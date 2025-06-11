@@ -2,7 +2,8 @@
 set -e
 
 echo "Starting pg_dump..."
-export BACKUP_FILE=/tmp/db_backup.sql.gz
+env
+export BACKUP_FILE=/tmp/${POSTGRES_DATABASE}_backup.sql.gz
 PGPASSWORD="$POSTGRES_PASSWORD" pg_dump -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DATABASE" | gzip > "$BACKUP_FILE"
 
 echo "Uploading to S3..."
