@@ -1,0 +1,186 @@
+{# dynamically inject color classes used in sparkline config #}
+{% for page in pages.values() %}
+  {% for row in page.rows %}
+    {% if row.widget == "prometheus" and row.configuration.query is iterable %}
+      {% for query in row.configuration.query %}
+        {% if query.mode == "sparkline" %}
+          {% for rule in query.sparkline.colorRules or [] %}
+.color-{{ rule.color }} {
+  color: {{ rule.color }};
+}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+@font-face {
+  font-family: '{{ theme.title_font_family }}';
+  src: url('{{ theme.title_font_file }}') format('truetype');
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: {{ theme.general_content_font }};
+  background: url("/static/background.png") no-repeat center center fixed;
+  background-size: cover;
+  color: #000;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #000;
+  color: white;
+}
+
+header img {
+  height: 50px;
+  margin-right: 1rem;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-family: '{{ theme.title_font_family }}', {{ theme.general_content_font }};
+  transition: font-family 0.3s ease;
+}
+
+header p {
+  margin: 0;
+  font-size: 1rem;
+  color: {{ theme.accent_color }};
+  font-family: '{{ theme.title_font_family }}', {{ theme.general_content_font }};
+  transition: font-family 0.3s ease;
+}
+
+header h1:hover,
+header p:hover {
+  font-family: {{ theme.general_content_font }};
+}
+
+nav {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.75rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+nav a {
+  color: #000;
+  margin-right: 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.container {
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.widget {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  color: #000;
+}
+
+.widget::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top left,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.03)
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.widget::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVORK5CYII=");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.widget > * {
+  position: relative;
+  z-index: 3;
+}
+
+.widget-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.widget-inner {
+  flex: 1;
+}
+
+.span-1 { grid-column: span 1; }
+.span-2 { grid-column: span 2; }
+.span-3 { grid-column: span 3; }
+
+.widget-placeholder {
+  opacity: 0.7;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #555;
+}
+
+.alert-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.alert-list li {
+  margin-bottom: 0.25rem;
+}
+
+.prometheus-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.prom-tile {
+  flex: 1 1 120px;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.prom-tile-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.prom-tile-value {
+  font-size: 1.25rem;
+}
+

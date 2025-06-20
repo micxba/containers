@@ -1,0 +1,11 @@
+{% set result = fetch_alerts(row.configuration.url) %}
+{% if result.error %}
+  <div class="widget-placeholder">Error loading widget: {{ result.error }}</div>
+{% else %}
+  {% set grouped = group_alerts(result.alerts, row.configuration.group_by|default('severity')) %}
+  <ul class="alert-list">
+    {% for group, alerts in grouped.items() %}
+      <li><strong>{{ group.title() }}</strong>: {{ alerts|length }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}

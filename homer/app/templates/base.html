@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header>
+    {% if logo %}
+      <img src="{{ logo }}" alt="Logo">
+    {% endif %}
+    <div>
+      <h1>{{ title }}</h1>
+      <p>{{ subtitle }}</p>
+    </div>
+  </header>
+
+  <nav>
+    {% for item in menu %}
+      <a href="{{ item.path }}">{{ item.name }}</a>
+    {% endfor %}
+  </nav>
+
+  {% block content %}{% endblock %}
+</body>
+</html>

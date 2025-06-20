@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container" style="grid-template-columns: repeat({{ layout.columns }}, 1fr);">
+      {% for row in layout.rows %}
+        <div class="widget span-{{ row.span }}">
+          <h3 class="widget-title">{{ row.name }}</h3>
+          {% if row.widget == "freetext" %}
+            {{ row.configuration | safe }}
+          {% else %}
+            {% set widget_index = loop.index0 %}
+            {% include row.widget + "_widget.html" %}
+          {% endif %}
+        </div>
+      {% endfor %}
+  </div>
+{% endblock %}

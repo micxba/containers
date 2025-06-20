@@ -1,0 +1,201 @@
+title: Sith Network
+subtitle: A Holocron interface
+logo: /static/logo.png
+
+theme:
+  title_font_family: "ImperialCode2"
+  title_font_file: "/static/fonts/ImperialCode2.ttf"
+  general_content_font: "'Segoe UI', sans-serif"
+  accent_color: "#FF4757"
+  background_color: "#111"
+
+menu:
+  - name: Home
+    path: /
+  # - name: Monitoring
+  #   path: /monitoring
+  # - name: Admin
+  #   path: /admin
+
+pages:
+  /:
+    columns: 3
+    rows:
+      - span: 3
+        widget: freetext
+        name: Welcome
+        configuration: |
+          <h2>Welcome to Sith Network</h2>
+          <p>This is just a first iteration of my Home-Lab environment running a K8s cluster.</p>
+          <p>The site is written in Python with Flask and will hopefully be extended of the next few weeks/months
+
+      - span: 1
+        widget: alertmanager
+        name: Alert Manager Summary
+        configuration:
+          url: https://alertmanager.sith.network
+          group_by: job
+
+      - span: 1
+        widget: prometheus
+        name: Cluster Memory Trends
+        configuration:
+          url: https://prometheus.sith.network
+          query:
+
+            - key: 'Memory: Worker 1'
+              cluster: ruleof3-k8s
+              query: '(1 - (node_memory_MemAvailable_bytes{instance="192.168.0.220:9100"} / node_memory_MemTotal_bytes{instance="192.168.0.220:9100"})) * 100'
+              unit: ''
+              unitMultiplier: 1
+              mode: sparkline
+              sparkline:
+                width: 20
+                range: 10m
+                colorRules:
+                  - gt: 0
+                    color: green
+                  - gt: 60
+                    color: orange
+                  - gt: 85
+                    color: red
+ 
+            - key: "Memory: Worker 2"
+              cluster: ruleof3-k8s
+              query: '(1 - (node_memory_MemAvailable_bytes{instance="192.168.0.156:9100"} / node_memory_MemTotal_bytes{instance="192.168.0.156:9100"})) * 100'
+              unit: ''
+              unitMultiplier: 1
+              mode: sparkline
+              sparkline:
+                width: 20
+                range: 10m
+                colorRules:
+                  - gt: 0
+                    color: green
+                  - gt: 60
+                    color: orange
+                  - gt: 85
+                    color: red
+            - key: "Memory: Worker 3"
+              cluster: ruleof3-k8s
+              query: '(1 - (node_memory_MemAvailable_bytes{instance="192.168.0.224:9100"} / node_memory_MemTotal_bytes{instance="192.168.0.224:9100"})) * 100'
+              unit: ''
+              unitMultiplier: 1
+              mode: sparkline
+              sparkline:
+                width: 20
+                range: 10m
+                colorRules:
+                  - gt: 0
+                    color: green
+                  - gt: 60
+                    color: orange
+                  - gt: 85
+                    color: red
+
+      - span: 1
+        widget: prometheus
+        name: Cluster CPU Trends
+        configuration:
+          url: https://prometheus.sith.network
+          query:
+
+            - key: 'CPU: Worker 1'
+              cluster: ruleof3-k8s
+              query: 'rate(node_cpu_seconds_total{instance="192.168.0.220:9100"}[1m]) * 100'
+              unit: ''
+              unitMultiplier: 1
+              mode: sparkline
+              sparkline:
+                width: 20
+                range: 10m
+                colorRules:
+                  - gt: 0
+                    color: green
+                  - gt: 80
+                    color: orange
+                  - gt: 90
+                    color: red
+ 
+            - key: "CPU: Worker 2"
+              cluster: ruleof3-k8s
+              query: 'rate(node_cpu_seconds_total{instance="192.168.0.156:9100"}[1m]) * 100'
+              unit: ''
+              unitMultiplier: 1
+              mode: sparkline
+              sparkline:
+                width: 20
+                range: 10m
+                colorRules:
+                  - gt: 0
+                    color: green
+                  - gt: 80
+                    color: orange
+                  - gt: 90
+                    color: red
+            - key: "CPU: Worker 3"
+              cluster: ruleof3-k8s
+              query: 'rate(node_cpu_seconds_total{instance="192.168.0.224:9100"}[1m]) * 100'
+              unit: ''
+              unitMultiplier: 1
+              mode: sparkline
+              sparkline:
+                width: 20
+                range: 10m
+                colorRules:
+                  - gt: 0
+                    color: green
+                  - gt: 80
+                    color: orange
+                  - gt: 90
+                    color: red
+
+      - span: 1
+        widget: freetext
+        name: ""
+        configuration: |
+          <br/>
+
+      - span: 1
+        widget: prometheus
+        name: Cluster Memory Usage
+        configuration:
+          url: https://prometheus.sith.network
+          query:
+             - key: Real
+               cluster: ruleof3-k8s
+               query: 'sum(node_memory_MemTotal_bytes{} - node_memory_MemAvailable_bytes{}) / sum(node_memory_MemTotal_bytes{})'
+               unit: percent
+               unitMultiplier: 100
+             - key: Requests
+               cluster: ruleof3-k8s
+               query: 'sum(kube_pod_container_resource_requests{resource="memory", }) / sum(machine_memory_bytes{})'
+               unit: percent
+               unitMultiplier: 100
+             - key: Limits
+               cluster: ruleof3-k8s
+               query: 'sum(kube_pod_container_resource_limits{resource="memory", }) / sum(machine_memory_bytes{})'
+               unit: percent
+               unitMultiplier: 100
+
+      - span: 1
+        widget: prometheus
+        name: Cluster CPU Usage
+        configuration:
+          url: https://prometheus.sith.network
+          query:
+             - key: Real
+               cluster: ruleof3-k8s
+               query: 'avg(sum by (instance, cpu) (rate(node_cpu_seconds_total{mode!~"idle|iowait|steal"}[5m]))) * 100'
+               unit: percent
+               unitMultiplier: 1
+             - key: Requests
+               cluster: ruleof3-k8s
+               query: 'sum(kube_pod_container_resource_requests{resource="cpu"}) / sum(machine_cpu_cores{})'
+               unit: percent
+               unitMultiplier: 100
+             - key: Limits
+               cluster: ruleof3-k8s
+               query: 'sum(kube_pod_container_resource_limits{resource="cpu"}) / sum(machine_cpu_cores{})'
+               unit: percent
+               unitMultiplier: 100

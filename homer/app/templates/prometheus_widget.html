@@ -1,0 +1,27 @@
+{% set result = fetch_metrics(row.configuration) %}
+<div class="widget-inner">
+  {% if result.error %}
+    <div class="widget-placeholder">Error loading widget: {{ result.error }}</div>
+  {% else %}
+    <div class="prometheus-tiles">
+      {% for item in result.results %}
+        <div class="prom-tile">
+          <div class="prom-tile-title">{{ item.key }}</div>
+          {% if item.error %}
+            <div class="prom-tile-value">Error: {{ item.error }}</div>
+          {% else %}
+            {% if item.mode == "sparkline" %}
+              <div class="prom-tile-value{% if item.color %} color-{{ item.color }}{% endif %}">
+                <code>{{ item.sparkline | safe }}</code>{% if item.unit %} {{ item.unit }}{% endif %}
+              </div>
+            {% else %}
+              <div class="prom-tile-value">
+                {{ item.value }}{% if item.unit %} {{ item.unit }}{% endif %}
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
