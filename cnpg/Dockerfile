@@ -1,5 +1,5 @@
 # Stage 1: Borrow from TensorChord's pgvecto.rs PG17 image
-FROM tensorchord/pgvecto-rs:pg17-nightly as pgvecto
+FROM tensorchord/pgvecto-rs:pg17-v0.0.0-nightly.20250227 as pgvecto
 
 # Stage 2: Your actual runtime image (CloudNativePG official)
 FROM ghcr.io/cloudnative-pg/postgresql:17.5
